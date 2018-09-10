@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.shashank.expensemanager.R;
 import com.shashank.expensemanager.adapters.SectionsPageAdapter;
 import com.shashank.expensemanager.fragments.BalanceFragment;
+import com.shashank.expensemanager.fragments.CustomBottomSheetDialogFragment;
 import com.shashank.expensemanager.fragments.ExpenseFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                new CustomBottomSheetDialogFragment().show(getSupportFragmentManager(), "Dialog");
+
             }
         });
 
@@ -54,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager){
         SectionsPageAdapter adapter=new SectionsPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new ExpenseFragment(),"Expense");
+        adapter.addFragment(new ExpenseFragment(),"Expenses");
         adapter.addFragment(new BalanceFragment(),"Balance");
         viewPager.setAdapter(adapter);
     }
