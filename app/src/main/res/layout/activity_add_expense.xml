@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.AddExpenseActivity">
+
+
+    <EditText
+        android:id="@+id/amountEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="14"
+        android:hint="Amount"
+        android:inputType="number"
+        android:layout_marginTop="35dp"
+        android:layout_marginStart="25dp" />
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dateLinerLayout"
+            android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="25dp"
+                    android:textSize="18sp"
+                    android:padding="4dp"/>
+                <TextView
+                    android:id="@+id/dateTextView"
+                    android:text="11/09/2018"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="20sp"
+                    android:padding="4dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/categoryLinerLayout"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginEnd="15dp"
+                android:textSize="18sp"
+                android:padding="4dp"/>
+            <TextView
+                android:id="@+id/categoryTextView"
+                android:text="Food"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginStart="38dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="30dp"
+                android:textSize="20sp"
+                android:padding="4dp"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/descriptionEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="14"
+        android:hint="Description"
+        android:inputType="textPersonName"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="25dp" />
+
+
+</LinearLayout>

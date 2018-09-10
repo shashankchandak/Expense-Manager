@@ -1,5 +1,6 @@
 package com.shashank.expensemanager.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.view.LayoutInflater;
@@ -9,6 +10,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.shashank.expensemanager.R;
+import com.shashank.expensemanager.activities.AddExpenseActivity;
+import com.shashank.expensemanager.utils.Constants;
 
 public class CustomBottomSheetDialogFragment extends BottomSheetDialogFragment {
 
@@ -16,7 +19,7 @@ public class CustomBottomSheetDialogFragment extends BottomSheetDialogFragment {
     Button addExpenseButton;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.bottom_sheet_fragment, container, false);
 
         addIncomeButton=v.findViewById(R.id.bottom_sheet_income_btn);
@@ -25,16 +28,21 @@ public class CustomBottomSheetDialogFragment extends BottomSheetDialogFragment {
         addIncomeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(),"Income",Toast.LENGTH_LONG).show();
                 dismiss();
+                Intent intent =new Intent(getActivity(), AddExpenseActivity.class);
+                intent.putExtra("from", Constants.addIncomeString);
+                startActivity(intent);
             }
         });
 
         addExpenseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(),"Expense",Toast.LENGTH_LONG).show();
                 dismiss();
+                Intent intent =new Intent(getActivity(), AddExpenseActivity.class);
+                intent.putExtra("from", Constants.addExpenseString);
+                startActivity(intent);
+
             }
         });
 
