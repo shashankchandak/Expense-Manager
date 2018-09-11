@@ -49,10 +49,10 @@
                     android:padding="4dp"/>
                 <TextView
                     android:id="@+id/dateTextView"
-                    android:text="11/09/2018"
+                    android:text="11/09/2017"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginStart="25dp"
                     android:layout_marginEnd="15dp"
                     android:layout_marginBottom="10dp"
@@ -75,17 +75,16 @@
                 android:layout_marginEnd="15dp"
                 android:textSize="18sp"
                 android:padding="4dp"/>
-            <TextView
-                android:id="@+id/categoryTextView"
-                android:text="Food"
-                android:layout_width="wrap_content"
+
+            <Spinner
+                android:id="@+id/categorySpinner"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:layout_marginStart="38dp"
+                android:layout_marginStart="23dp"
                 android:layout_marginBottom="10dp"
-                android:layout_marginEnd="30dp"
-                android:textSize="20sp"
-                android:padding="4dp"/>
+                android:layout_marginEnd="30dp"/>
+
         </LinearLayout>
 
 
