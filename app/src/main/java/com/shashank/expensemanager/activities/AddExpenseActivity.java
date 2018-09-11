@@ -2,6 +2,7 @@ package com.shashank.expensemanager.activities;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,8 +18,8 @@ import com.shashank.expensemanager.utils.Constants;
 
 public class AddExpenseActivity extends AppCompatActivity {
 
-    EditText amountEditText;
-    EditText descriptionEditText;
+    TextInputEditText amountEditText;
+    TextInputEditText descriptionEditText;
     TextView dateTextView;
     LinearLayout dateLinearLayout;
 
@@ -32,8 +33,8 @@ public class AddExpenseActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        amountEditText=findViewById(R.id.amountEditText);
-        descriptionEditText=findViewById(R.id.descriptionEditText);
+        amountEditText=findViewById(R.id.amountTextInputEditText);
+        descriptionEditText=findViewById(R.id.descriptionTextInputEditText);
         dateTextView=findViewById(R.id.dateTextView);
         dateLinearLayout=findViewById(R.id.dateLinerLayout);
         //First task here is to determine from where this activity is launched from the 4 possibilities
