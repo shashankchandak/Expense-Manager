@@ -37,7 +37,7 @@
                 android:layout_marginTop="8dp"
                 android:padding="2dp"
                 android:textColor="@color/cardview_dark_background"
-                android:text="29/6/18"
+                android:text="11/09/2018"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -78,7 +78,8 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:padding="5dp"
-                    android:text="TextView"
+                    android:text="-300"
+                    android:textSize="24sp"
                      />
             </LinearLayout>
 
@@ -88,14 +89,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="6dp"
                 android:layout_marginTop="50dp"
                 android:padding="10dp"
-                android:text="Swiggy"
+                android:text="Dominos"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.109"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0" />

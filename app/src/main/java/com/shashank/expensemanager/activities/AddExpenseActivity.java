@@ -41,11 +41,12 @@ public class AddExpenseActivity extends AppCompatActivity {
     Calendar myCalendar;
 
 
-    //These variables contaim data which will be stored permanently on hitting save button
+    //These variables contain data which will be stored permanently on hitting save button
     int amount;
     String description;
     Date dateOfExpense;
-    String categoryOfExpense;
+    String categoryOfExpense;       //This paramter is to decide category in a transaction
+    String categoryOfTransaction;  //This parameter to decide whether it is income and expense
 
     //Variable to keep track from where it came to this activity
     String intentFrom;
@@ -76,6 +77,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         intentFrom=intent.getStringExtra("from");
 
         if(intentFrom.equals(Constants.addIncomeString)){
+            categoryOfTransaction=Constants.incomeCategory;
             setTitle("Add Income");
             categories.add("Income");
             categorySpinner.setClickable(false);
@@ -84,7 +86,34 @@ public class AddExpenseActivity extends AppCompatActivity {
 
         }
         else if(intentFrom.equals(Constants.addExpenseString)){
+            categoryOfExpense=Constants.expenseCategory;
             setTitle("Add Expense");
+            categories.add("Food");
+            categories.add("Travel");
+            categories.add("Clothes");
+            categories.add("Health");
+            categories.add("Other");
+            categorySpinner.setAdapter(new ArrayAdapter<>(AddExpenseActivity.this,android.R.layout.simple_list_item_1,categories));
+
+        }
+
+        else if(intentFrom.equals(Constants.editIncomeString)){
+            setTitle("Edit Income");
+
+            // TODO: 12-09-2018  also get the extra data from intent and set here.
+            categoryOfExpense=Constants.incomeCategory;
+            categories.add("Income");
+            categorySpinner.setClickable(false);
+            categorySpinner.setEnabled(false);
+            categorySpinner.setAdapter(new ArrayAdapter<>(AddExpenseActivity.this,android.R.layout.simple_list_item_1,categories));
+
+        }
+
+        else if(intentFrom.equals(Constants.editExpenseString)){
+            categoryOfExpense=Constants.expenseCategory;
+            setTitle("Edit Expense");
+
+            // TODO: 12-09-2018  also get the extra data from intent and set here.
             categories.add("Food");
             categories.add("Travel");
             categories.add("Clothes");
@@ -166,6 +195,7 @@ public class AddExpenseActivity extends AppCompatActivity {
                     Log.i("description", description);
                     Log.i("dateOfExpense", dateOfExpense.toString());
                     Log.i("categoryOfExpense", categoryOfExpense);
+                    Log.i("categoryOfTransaction",categoryOfTransaction);
                     //For now i have logged here make the object of POJO and save to database
 
                     finish();
