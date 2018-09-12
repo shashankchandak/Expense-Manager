@@ -20,8 +20,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.shashank.expensemanager.R;
+import com.shashank.expensemanager.transactionDb.TransactionEntry;
 import com.shashank.expensemanager.utils.Constants;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,7 +39,6 @@ public class AddExpenseActivity extends AppCompatActivity {
     LinearLayout dateLinearLayout;
     Spinner categorySpinner;
     ArrayList<String> categories;
-
     Calendar myCalendar;
 
 
@@ -86,7 +87,7 @@ public class AddExpenseActivity extends AppCompatActivity {
 
         }
         else if(intentFrom.equals(Constants.addExpenseString)){
-            categoryOfExpense=Constants.expenseCategory;
+            categoryOfTransaction=Constants.expenseCategory;
             setTitle("Add Expense");
             categories.add("Food");
             categories.add("Travel");
@@ -100,8 +101,20 @@ public class AddExpenseActivity extends AppCompatActivity {
         else if(intentFrom.equals(Constants.editIncomeString)){
             setTitle("Edit Income");
 
-            // TODO: 12-09-2018  also get the extra data from intent and set here.
-            categoryOfExpense=Constants.incomeCategory;
+            amountTextInputEditText.setText(String.valueOf(intent.getIntExtra("amount",0)));
+            amountTextInputEditText.setSelection(amountTextInputEditText.getText().length());
+            descriptionTextInputEditText.setText(intent.getStringExtra("description"));
+
+            SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+            try {
+                Date date=sdf.parse(intent.getStringExtra("date"));
+                myCalendar.setTime(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            dateTextView.setText(intent.getStringExtra("date"));
+
+            categoryOfTransaction=Constants.incomeCategory;
             categories.add("Income");
             categorySpinner.setClickable(false);
             categorySpinner.setEnabled(false);
@@ -110,17 +123,27 @@ public class AddExpenseActivity extends AppCompatActivity {
         }
 
         else if(intentFrom.equals(Constants.editExpenseString)){
-            categoryOfExpense=Constants.expenseCategory;
+            categoryOfTransaction=Constants.expenseCategory;
             setTitle("Edit Expense");
+            amountTextInputEditText.setText(String.valueOf(intent.getIntExtra("amount",0)));
+            amountTextInputEditText.setSelection(amountTextInputEditText.getText().length());
+            descriptionTextInputEditText.setText(intent.getStringExtra("description"));
+            dateTextView.setText(intent.getStringExtra("date"));
+            SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+            try {
+                Date date=sdf.parse(intent.getStringExtra("date"));
+                myCalendar.setTime(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
-            // TODO: 12-09-2018  also get the extra data from intent and set here.
             categories.add("Food");
             categories.add("Travel");
             categories.add("Clothes");
             categories.add("Health");
             categories.add("Other");
             categorySpinner.setAdapter(new ArrayAdapter<>(AddExpenseActivity.this,android.R.layout.simple_list_item_1,categories));
-
+            categorySpinner.setSelection(categories.indexOf(intent.getStringExtra("category")));
         }
 
 
@@ -191,12 +214,14 @@ public class AddExpenseActivity extends AppCompatActivity {
                         categoryOfExpense = categories.get(categorySpinner.getSelectedItemPosition());
 
 
-                    Log.i("amount", String.valueOf(amount));
-                    Log.i("description", description);
-                    Log.i("dateOfExpense", dateOfExpense.toString());
-                    Log.i("categoryOfExpense", categoryOfExpense);
-                    Log.i("categoryOfTransaction",categoryOfTransaction);
-                    //For now i have logged here make the object of POJO and save to database
+                    TransactionEntry transactionEntry=new TransactionEntry(amount,categoryOfExpense,description,dateOfExpense,categoryOfTransaction);
+                    // TODO: 13-09-2018  save to database
+                    if(intentFrom.equals(Constants.addIncomeString)||intentFrom.equals(Constants.addExpenseString)){
+                        // TODO: 13-09-2018 perform a insert operation to database
+                    }
+                    else if(intentFrom.equals(Constants.editIncomeString)||intentFrom.equals(Constants.editExpenseString)){
+                        // TODO: 13-09-2018 perform a update operation to databse
+                    }
 
                     finish();
                 }
