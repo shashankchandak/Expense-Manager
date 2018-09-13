@@ -104,6 +104,7 @@ public class AddExpenseActivity extends AppCompatActivity {
             amountTextInputEditText.setText(String.valueOf(intent.getIntExtra("amount",0)));
             amountTextInputEditText.setSelection(amountTextInputEditText.getText().length());
             descriptionTextInputEditText.setText(intent.getStringExtra("description"));
+            descriptionTextInputEditText.setSelection(descriptionTextInputEditText.getText().length());
 
             SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
             try {
@@ -128,6 +129,7 @@ public class AddExpenseActivity extends AppCompatActivity {
             amountTextInputEditText.setText(String.valueOf(intent.getIntExtra("amount",0)));
             amountTextInputEditText.setSelection(amountTextInputEditText.getText().length());
             descriptionTextInputEditText.setText(intent.getStringExtra("description"));
+            descriptionTextInputEditText.setSelection(descriptionTextInputEditText.getText().length());
             dateTextView.setText(intent.getStringExtra("date"));
             SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
             try {

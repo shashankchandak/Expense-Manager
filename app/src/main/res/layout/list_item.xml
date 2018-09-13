@@ -9,11 +9,12 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="1dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="4dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginStart="2dp"
         android:layout_marginTop="2dp"
-        app:cardCornerRadius="8dp"
+        app:cardCornerRadius="6dp"
+        android:elevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -28,28 +29,28 @@
 
 
             <TextView
-                android:id="@+id/dateTextViewrv"
+                android:id="@+id/amountTextViewrv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="6dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:padding="2dp"
-                android:textColor="@color/cardview_dark_background"
-                android:text="11/09/2018"
+                android:text="-300"
+                android:textSize="28sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.956"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="0.173" />
 
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -60,26 +61,25 @@
                     android:id="@+id/categoryTextViewrv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="2dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:padding="3dp"
+                    android:layout_marginTop="2dp"
+                    android:padding="2dp"
                     android:text="Food"
                     android:textColor="#000000"
-                    android:textSize="22sp" />
+                    android:textSize="20sp" />
 
 
                 <TextView
-                    android:id="@+id/amountTextViewrv"
+                    android:id="@+id/dateTextViewrv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
-                    android:padding="3dp"
-                    android:text="-300"
-                    android:textSize="26sp"
+                    android:layout_marginStart="11dp"
+                    android:padding="2dp"
+                    android:text="14/09/2018"
+                    android:textSize="12sp"
                      />
             </LinearLayout>
 
@@ -89,8 +89,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginStart="6dp"
-                android:layout_marginTop="55dp"
+                android:layout_marginStart="11dp"
+                android:layout_marginTop="60dp"
+                android:fontFamily="sans-serif-condensed-light"
                 android:padding="4dp"
                 android:text="Dominos"
                 android:textSize="14sp"
@@ -99,7 +100,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintVertical_bias="0.0" />
 
 
 

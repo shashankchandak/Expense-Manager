@@ -39,8 +39,8 @@ public class ExpenseFragment extends Fragment {
 
 
         // TODO: 13-09-2018  retrieve queries from database and add here ,for now just hardcoded irreveleant times.
-        transactionEntries.add(new TransactionEntry(100,"Food","Dominos", Calendar.getInstance().getTime(), Constants.expenseCategory));
-        transactionEntries.add(new TransactionEntry(200,"Travel","Mcdonalds",Calendar.getInstance().getTime(), Constants.expenseCategory));
+        transactionEntries.add(new TransactionEntry(100,"Food","A random description to see how it looks", Calendar.getInstance().getTime(), Constants.expenseCategory));
+        transactionEntries.add(new TransactionEntry(200,"Travel","Just roaming around",Calendar.getInstance().getTime(), Constants.expenseCategory));
         transactionEntries.add(new TransactionEntry(100,"Income","Pocket Money",Calendar.getInstance().getTime(), Constants.incomeCategory));
         transactionEntries.add(new TransactionEntry(100,"Income","Pocket Money",Calendar.getInstance().getTime(), Constants.incomeCategory));
 
