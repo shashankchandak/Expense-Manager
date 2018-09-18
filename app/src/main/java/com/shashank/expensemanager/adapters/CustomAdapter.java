@@ -13,19 +13,23 @@ import android.widget.TextView;
 
 import com.shashank.expensemanager.R;
 import com.shashank.expensemanager.activities.AddExpenseActivity;
+import com.shashank.expensemanager.transactionDb.AppDatabase;
+import com.shashank.expensemanager.transactionDb.AppExecutors;
 import com.shashank.expensemanager.transactionDb.TransactionEntry;
 import com.shashank.expensemanager.utils.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 
 
     Context context;
-    ArrayList<TransactionEntry> transactionEntries;
+    private List<TransactionEntry> transactionEntries;
+    private AppDatabase appDatabase;
 
-    public CustomAdapter(Context context, ArrayList<TransactionEntry> transactionEntries){
+    public CustomAdapter(Context context, List<TransactionEntry> transactionEntries){
         this.context=context;
         this.transactionEntries=transactionEntries;
     }
@@ -61,9 +65,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return transactionEntries.size();
+        if (transactionEntries == null || transactionEntries.size() == 0){
+            return 0;
+        } else {
+            return transactionEntries.size();
+        }
     }
 
+    public List<TransactionEntry> getTransactionEntries() {
+        return transactionEntries;
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -79,6 +90,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             amountTextViewrv=itemView.findViewById(R.id.amountTextViewrv);
             descriptionTextViewrv=itemView.findViewById(R.id.descriptionTextViewrv);
             dateTextViewrv=itemView.findViewById(R.id.dateTextViewrv);
+
+            appDatabase = AppDatabase.getInstance(context);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -101,6 +114,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                         intent.putExtra("date",date);
                         intent.putExtra("category",transactionEntries.get(getAdapterPosition()).getCategory());
                     }
+
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            appDatabase.transactionDao().removeExpense(transactionEntries.get(getAdapterPosition()));
+                        }
+                    });
+
                     context.startActivity(intent);
                 }
             });
