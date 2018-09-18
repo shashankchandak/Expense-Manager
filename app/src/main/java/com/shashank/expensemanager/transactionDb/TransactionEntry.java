@@ -15,7 +15,7 @@ public class TransactionEntry {
     private int amount;
     private String category;
     private String description;
-    private Date date;                  // TODO: 13-09-2018 Add appropiate type converter
+    private Date date;                  // COMPLETED: 13-09-2018 Add appropriate type converter
     private String transactionType; //to decide whether income or expense
 
     @Ignore

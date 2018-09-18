@@ -14,7 +14,7 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="2dp"
         app:cardCornerRadius="6dp"
-        android:elevation="0dp"
+        android:elevation="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

@@ -20,6 +20,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.shashank.expensemanager.R;
+import com.shashank.expensemanager.transactionDb.AppDatabase;
+import com.shashank.expensemanager.transactionDb.AppExecutors;
 import com.shashank.expensemanager.transactionDb.TransactionEntry;
 import com.shashank.expensemanager.utils.Constants;
 
@@ -41,12 +43,14 @@ public class AddExpenseActivity extends AppCompatActivity {
     ArrayList<String> categories;
     Calendar myCalendar;
 
+    private static AppDatabase appDatabase;
+
 
     //These variables contain data which will be stored permanently on hitting save button
     int amount;
     String description;
     Date dateOfExpense;
-    String categoryOfExpense;       //This paramter is to decide category in a transaction
+    String categoryOfExpense;       //This parameter is to decide category in a transaction
     String categoryOfTransaction;  //This parameter to decide whether it is income and expense
 
     //Variable to keep track from where it came to this activity
@@ -67,7 +71,9 @@ public class AddExpenseActivity extends AppCompatActivity {
         dateLinearLayout=findViewById(R.id.dateLinerLayout);
         categorySpinner=findViewById(R.id.categorySpinner);
 
-        categories=new ArrayList<>();
+        appDatabase = AppDatabase.getInstance(this);
+
+        categories = new ArrayList<>();
 
         myCalendar=Calendar.getInstance();
         setDateToTextView();
@@ -86,19 +92,18 @@ public class AddExpenseActivity extends AppCompatActivity {
             categorySpinner.setAdapter(new ArrayAdapter<>(AddExpenseActivity.this,android.R.layout.simple_list_item_1,categories));
 
         }
-        else if(intentFrom.equals(Constants.addExpenseString)){
-            categoryOfTransaction=Constants.expenseCategory;
+        else if(intentFrom.equals(Constants.addExpenseString)) {
+            categoryOfTransaction = Constants.expenseCategory;
             setTitle("Add Expense");
             categories.add("Food");
             categories.add("Travel");
             categories.add("Clothes");
             categories.add("Health");
             categories.add("Other");
-            categorySpinner.setAdapter(new ArrayAdapter<>(AddExpenseActivity.this,android.R.layout.simple_list_item_1,categories));
+            categorySpinner.setAdapter(new ArrayAdapter<>(AddExpenseActivity.this,
+                    android.R.layout.simple_list_item_1, categories));
 
-        }
-
-        else if(intentFrom.equals(Constants.editIncomeString)){
+        } else if(intentFrom.equals(Constants.editIncomeString)){
             setTitle("Edit Income");
 
             amountTextInputEditText.setText(String.valueOf(intent.getIntExtra("amount",0)));
@@ -121,9 +126,7 @@ public class AddExpenseActivity extends AppCompatActivity {
             categorySpinner.setEnabled(false);
             categorySpinner.setAdapter(new ArrayAdapter<>(AddExpenseActivity.this,android.R.layout.simple_list_item_1,categories));
 
-        }
-
-        else if(intentFrom.equals(Constants.editExpenseString)){
+        } else if(intentFrom.equals(Constants.editExpenseString)){
             categoryOfTransaction=Constants.expenseCategory;
             setTitle("Edit Expense");
             amountTextInputEditText.setText(String.valueOf(intent.getIntExtra("amount",0)));
@@ -147,8 +150,6 @@ public class AddExpenseActivity extends AppCompatActivity {
             categorySpinner.setAdapter(new ArrayAdapter<>(AddExpenseActivity.this,android.R.layout.simple_list_item_1,categories));
             categorySpinner.setSelection(categories.indexOf(intent.getStringExtra("category")));
         }
-
-
 
         dateLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,43 +196,72 @@ public class AddExpenseActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.saveButton:
-                // TODO: 10-09-2018 1.Retrieve and Save data to database and also update the recycler view
+                // COMPLETED: 10-09-2018 1.Retrieve and Save data to database and also update the recycler view
 
-                if(amountTextInputEditText.getText().toString().isEmpty()||descriptionTextInputEditText.getText().toString().isEmpty()){
 
-                    if(amountTextInputEditText.getText().toString().isEmpty())
+                if (amountTextInputEditText.getText().toString().isEmpty()
+                        || descriptionTextInputEditText.getText().toString().isEmpty()) {
+
+                    if (amountTextInputEditText.getText().toString().isEmpty())
                         amountTextInputEditText.setError("Amount cannot be empty");
-                    if(descriptionTextInputEditText.getText().toString().isEmpty())
+                    if (descriptionTextInputEditText.getText().toString().isEmpty())
                         descriptionTextInputEditText.setError("Please write some description");
 
-                }
-                else {
+                } else {
                     amount = Integer.parseInt(amountTextInputEditText.getText().toString());
                     description = descriptionTextInputEditText.getText().toString();
                     dateOfExpense = myCalendar.getTime();
 
-                    if (intentFrom.equals(Constants.addIncomeString) || intentFrom.equals(Constants.editIncomeString))
+                    if (intentFrom.equals(Constants.addIncomeString)
+                            || intentFrom.equals(Constants.editIncomeString))
                         categoryOfExpense = "Income";
                     else
                         categoryOfExpense = categories.get(categorySpinner.getSelectedItemPosition());
 
 
-                    TransactionEntry transactionEntry=new TransactionEntry(amount,categoryOfExpense,description,dateOfExpense,categoryOfTransaction);
-                    // TODO: 13-09-2018  save to database
-                    if(intentFrom.equals(Constants.addIncomeString)||intentFrom.equals(Constants.addExpenseString)){
-                        // TODO: 13-09-2018 perform a insert operation to database
-                    }
-                    else if(intentFrom.equals(Constants.editIncomeString)||intentFrom.equals(Constants.editExpenseString)){
-                        // TODO: 13-09-2018 perform a update operation to databse
+                    final TransactionEntry mTransactionEntry =
+                            new TransactionEntry(amount, categoryOfExpense, description, dateOfExpense, categoryOfTransaction);
+                    // COMPLETED: 13-09-2018  save to database
+                    if (intentFrom.equals(Constants.addIncomeString) || intentFrom.equals(Constants.addExpenseString)) {
+                        // COMPLETED: 13-09-2018 perform an insert operation to database
+                        int transactionAmount = mTransactionEntry.getAmount();
+                        Log.i("amount", String.valueOf(transactionAmount));
+                        addTransactionToDb(mTransactionEntry);
+
+                    } else if (intentFrom.equals(Constants.editIncomeString) || intentFrom.equals(Constants.editExpenseString)) {
+                        // COMPLETED: 13-09-2018 perform a update operation to database
+
+                        updateTransactionDetails(mTransactionEntry);
+
                     }
 
                     finish();
                 }
-
                 break;
-
-
         }
-        return  true;
+
+        return true;
     }
+
+    public void updateTransactionDetails(final TransactionEntry transactionEntry) {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                appDatabase.transactionDao().updateExpenseDetails(transactionEntry);
+            }
+        });
+        Log.i("UPDATE",transactionEntry.getDescription());
+    }
+
+    public void addTransactionToDb(final TransactionEntry transactionEntry) {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                appDatabase.transactionDao().insertExpense(transactionEntry);
+            }
+        });
+        Log.i("gfvghdvhd",String.valueOf(transactionEntry.getAmount()));
+
+    }
+
 }

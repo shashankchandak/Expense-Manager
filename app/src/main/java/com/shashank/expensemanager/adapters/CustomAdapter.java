@@ -18,14 +18,15 @@ import com.shashank.expensemanager.utils.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 
 
     Context context;
-    ArrayList<TransactionEntry> transactionEntries;
+    private List<TransactionEntry> transactionEntries;
 
-    public CustomAdapter(Context context, ArrayList<TransactionEntry> transactionEntries){
+    public CustomAdapter(Context context, List<TransactionEntry> transactionEntries){
         this.context=context;
         this.transactionEntries=transactionEntries;
     }
@@ -61,9 +62,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return transactionEntries.size();
+        if (transactionEntries == null || transactionEntries.size() == 0){
+            return 0;
+        } else {
+            return transactionEntries.size();
+        }
     }
 
+    public List<TransactionEntry> getTransactionEntries() {
+        return transactionEntries;
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
