@@ -61,7 +61,7 @@ public class ExpenseFragment extends Fragment {
                 return false;
             }
 
-            // Called when a user swipes left or right on a ViewHolder
+            // Called when a user swipes right on a ViewHolder
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 // Here is where you'll implement swipe to delete
