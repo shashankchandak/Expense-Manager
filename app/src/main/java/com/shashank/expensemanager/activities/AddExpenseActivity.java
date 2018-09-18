@@ -67,6 +67,8 @@ public class AddExpenseActivity extends AppCompatActivity {
 
     TransactionViewModel transactionViewModel;
 
+    int transactionid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,6 +127,7 @@ public class AddExpenseActivity extends AppCompatActivity {
             amountTextInputEditText.setSelection(amountTextInputEditText.getText().length());
             descriptionTextInputEditText.setText(intent.getStringExtra("description"));
             descriptionTextInputEditText.setSelection(descriptionTextInputEditText.getText().length());
+            transactionid=intent.getIntExtra("id",-1);
 
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             try {
@@ -149,6 +152,9 @@ public class AddExpenseActivity extends AppCompatActivity {
             descriptionTextInputEditText.setText(intent.getStringExtra("description"));
             descriptionTextInputEditText.setSelection(descriptionTextInputEditText.getText().length());
             dateTextView.setText(intent.getStringExtra("date"));
+            transactionid=intent.getIntExtra("id",-1);
+
+
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             try {
                 Date date = sdf.parse(intent.getStringExtra("date"));
@@ -234,20 +240,34 @@ public class AddExpenseActivity extends AppCompatActivity {
                     else
                         categoryOfExpense = categories.get(categorySpinner.getSelectedItemPosition());
 
-                     final TransactionEntry mTransactionEntry =new TransactionEntry(amount,
+                    final TransactionEntry mTransactionEntry = new TransactionEntry(amount,
                             categoryOfExpense,
                             description,
                             dateOfExpense,
                             categoryOfTransaction
                     );
 
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            appDatabase.transactionDao().insertExpense(mTransactionEntry);
-                            finish();
-                        }
-                    });
+                    if(intentFrom.equals(Constants.addIncomeString)||intentFrom.equals(Constants.addExpenseString)) {
+
+
+                        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                appDatabase.transactionDao().insertExpense(mTransactionEntry);
+                            }
+                        });
+                    }
+                    else{
+                        mTransactionEntry.setId(transactionid);
+                        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                appDatabase.transactionDao().updateExpenseDetails(mTransactionEntry);
+
+                            }
+                        });
+                    }
+                    finish();
 
                 }
                 break;

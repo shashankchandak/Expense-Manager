@@ -106,6 +106,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                         intent.putExtra("amount",transactionEntries.get(getAdapterPosition()).getAmount());
                         intent.putExtra("description",transactionEntries.get(getAdapterPosition()).getDescription());
                         intent.putExtra("date",date);
+                        intent.putExtra("id",transactionEntries.get(getAdapterPosition()).getId());
                     }
                     else {
                         intent.putExtra("from", Constants.editExpenseString);
@@ -113,14 +114,17 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                         intent.putExtra("description",transactionEntries.get(getAdapterPosition()).getDescription());
                         intent.putExtra("date",date);
                         intent.putExtra("category",transactionEntries.get(getAdapterPosition()).getCategory());
+                        intent.putExtra("id",transactionEntries.get(getAdapterPosition()).getId());
                     }
 
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+
+                    //Updated on 19/8/2018 no need of this now as added update function properly
+                    /*AppExecutors.getInstance().diskIO().execute(new Runnable() {
                         @Override
                         public void run() {
                             appDatabase.transactionDao().removeExpense(transactionEntries.get(getAdapterPosition()));
                         }
-                    });
+                    });*/
 
                     context.startActivity(intent);
                 }
