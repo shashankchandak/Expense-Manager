@@ -27,5 +27,25 @@ public class TransactionViewModel extends AndroidViewModel {
         return expenseList;
     }
 
+//    The code below can be ignored
+
+    public void updateTransaction(TransactionEntry transactionEntry){
+        new updateTransactionDetails(appDatabase).execute(transactionEntry);
+    }
+
+   private static class updateTransactionDetails extends AsyncTask<TransactionEntry,Void,Void>{
+
+        private AppDatabase mdb;
+
+        public updateTransactionDetails(AppDatabase appDatabase){
+            mdb = appDatabase;
+        }
+       @Override
+       protected Void doInBackground(TransactionEntry... transactionEntries) {
+            mdb.transactionDao().updateExpenseDetails(transactionEntries[0]);
+           return null;
+       }
+   }
+
 
 }

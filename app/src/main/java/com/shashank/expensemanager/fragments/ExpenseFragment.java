@@ -54,20 +54,8 @@ public class ExpenseFragment extends Fragment {
         mAppDb = AppDatabase.getInstance(getContext());
 
 
-        // COMPLETED: 13-09-2018  retrieve queries from database and add here ,for now just hardcoded irreveleant times.
 
-       /*
-        transactionEntries.add(new TransactionEntry(100,"Food","A random description to see how it looks", Calendar.getInstance().getTime(), Constants.expenseCategory));
-        transactionEntries.add(new TransactionEntry(200,"Travel","Just roaming around",Calendar.getInstance().getTime(), Constants.expenseCategory));
-        transactionEntries.add(new TransactionEntry(100,"Income","Pocket Money",Calendar.getInstance().getTime(), Constants.incomeCategory));
-        transactionEntries.add(new TransactionEntry(100,"Income","Pocket Money",Calendar.getInstance().getTime(), Constants.incomeCategory));
-
-        transactionEntries.add(new TransactionEntry(200,"Food","Mcdonalds",Calendar.getInstance().getTime(), Constants.expenseCategory));
-        transactionEntries.add(new TransactionEntry(100,"Income","Pocket Money",Calendar.getInstance().getTime(), Constants.incomeCategory));
-
-        */
-
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
@@ -92,32 +80,35 @@ public class ExpenseFragment extends Fragment {
             }
         }).attachToRecyclerView(rv);
 
+        setupViewModel();
 
 
+        return view;
+    }
 
+    public void setupViewModel(){
         transactionViewModel = ViewModelProviders.of(this)
                 .get(TransactionViewModel.class);
 
         transactionViewModel.getExpenseList()
                 .observe(this, new Observer<List<TransactionEntry>>() {
-            @Override
-            public void onChanged(@Nullable List<TransactionEntry> transactionEntriesFromDb) {
-                Log.i(LOG_TAG,"Actively retrieving from DB");
-                transactionEntries = transactionEntriesFromDb;
-                for (int i =0 ; i < transactionEntries.size() ; i++){
-                    String description = transactionEntries.get(i).getDescription();
-                    int amount = transactionEntries.get(i).getAmount();
-                    Log.i("DESCRIPTION AMOUNT",description + String.valueOf(amount));
-                }
-
-                customAdapter=new CustomAdapter(getActivity(),transactionEntries);
-                rv.setAdapter(customAdapter);
-            }
-        });
+                    @Override
+                    public void onChanged(@Nullable List<TransactionEntry> transactionEntriesFromDb) {
+                        Log.i(LOG_TAG,"Actively retrieving from DB");
 
 
-//        customAdapter=new CustomAdapter(getActivity(),transactionEntries);
+                        transactionEntries = transactionEntriesFromDb;
+//                        Logging to check DB values
+                        for (int i =0 ; i < transactionEntries.size() ; i++){
+                            String description = transactionEntries.get(i).getDescription();
+                            int amount = transactionEntries.get(i).getAmount();
+                            Log.i("DESCRIPTION AMOUNT",description + String.valueOf(amount));
+                        }
 
-        return view;
+//                        Setting Adapter
+                        customAdapter=new CustomAdapter(getActivity(),transactionEntries);
+                        rv.setAdapter(customAdapter);
+                    }
+                });
     }
 }

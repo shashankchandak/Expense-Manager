@@ -15,10 +15,13 @@ import java.util.List;
 @Dao
 public interface TransactionDao {
 
-    @Query("select * from transactionTable order by id")
+    @Query("select * from transactionTable order by date DESC")
     LiveData<List<TransactionEntry>> loadAllTransactions();
 
-    @Insert
+    @Query("select * from transactionTable where id = :id")
+    LiveData<TransactionEntry> loadExpenseById(int id);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertExpense(TransactionEntry transactionEntry);
 
     @Delete

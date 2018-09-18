@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.shashank.expensemanager.R;
 import com.shashank.expensemanager.activities.AddExpenseActivity;
+import com.shashank.expensemanager.transactionDb.AppDatabase;
+import com.shashank.expensemanager.transactionDb.AppExecutors;
 import com.shashank.expensemanager.transactionDb.TransactionEntry;
 import com.shashank.expensemanager.utils.Constants;
 
@@ -25,6 +27,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     Context context;
     private List<TransactionEntry> transactionEntries;
+    private AppDatabase appDatabase;
 
     public CustomAdapter(Context context, List<TransactionEntry> transactionEntries){
         this.context=context;
@@ -88,6 +91,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             descriptionTextViewrv=itemView.findViewById(R.id.descriptionTextViewrv);
             dateTextViewrv=itemView.findViewById(R.id.dateTextViewrv);
 
+            appDatabase = AppDatabase.getInstance(context);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -109,6 +114,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                         intent.putExtra("date",date);
                         intent.putExtra("category",transactionEntries.get(getAdapterPosition()).getCategory());
                     }
+
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            appDatabase.transactionDao().removeExpense(transactionEntries.get(getAdapterPosition()));
+                        }
+                    });
+
                     context.startActivity(intent);
                 }
             });
