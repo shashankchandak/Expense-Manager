@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
 
+    public static FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+
 
 
     private void setupViewPager(ViewPager viewPager){
