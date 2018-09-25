@@ -19,6 +19,7 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.shashank.expensemanager.R;
 import com.shashank.expensemanager.activities.MainActivity;
@@ -33,9 +34,8 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
 
     PieChart pieChart;
     Spinner spinner;
-    Integer balance[] = {25,50,20,30};
+    Integer balance[] = {55,50,220,0};
     String category[] = {"Food", "Theatre", "Sports", "Petrol"} ;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -76,13 +76,16 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
         }
         pieChart.setVisibility(View.VISIBLE);
         PieDataSet dataSet = new PieDataSet(pieEntries,null);
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         PieData pieData = new PieData(dataSet);
-        pieData.setValueTextSize(30);
+        pieData.setValueTextSize(20);
 
         pieChart.setData(pieData);
+//        pieData.setValueTextColor
+
         pieChart.animateY(1000);
         pieChart.invalidate();
+
 
 
     }

@@ -11,6 +11,7 @@
     <string name="add_income">Add Income</string>
     <string name="add_expense">Add Expense</string>
     <string-array name="date_array">
+        <item>All</item>
         <item>This Week</item>
         <item>Today</item>
         <item>This Month</item>
