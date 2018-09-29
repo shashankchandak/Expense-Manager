@@ -13,7 +13,6 @@
     <string-array name="date_array">
         <item>All</item>
         <item>This Week</item>
-        <item>Today</item>
         <item>This Month</item>
 
     </string-array>

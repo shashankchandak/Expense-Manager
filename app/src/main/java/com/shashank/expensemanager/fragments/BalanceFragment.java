@@ -32,9 +32,11 @@ import com.shashank.expensemanager.transactionDb.TransactionViewModel;
 import com.shashank.expensemanager.utils.Constants;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -62,17 +64,18 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
 
         pieChart= view.findViewById(R.id.balancePieChart);
         spinner = view.findViewById(R.id.spinner);
-        setupSpinner();
+        //setupSpinner();
         spinner.setOnItemSelectedListener(this);
 
         mAppDb = AppDatabase.getInstance(getContext());
+
         balanceTv = view.findViewById(R.id.totalAmountTextView);
         expenseTv = view.findViewById(R.id.amountForExpenseTextView);
         incomeTv = view.findViewById(R.id.amountForIncomeTextView);
 
         dateTv = view.findViewById(R.id.dateTextView);
 
-        getBalanceAmount();
+        //getAllBalanceAmount();
         return view;
 
     }
@@ -89,6 +92,8 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser){
+            //getAllBalanceAmount();
+            setupSpinner();
             setupPieChart();
             fab.setVisibility(View.GONE);
         } else{
@@ -96,7 +101,8 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
         }
     }
 
-    private void getBalanceAmount(){
+    private void getAllBalanceAmount(){
+        dateTv.setText("All");
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -106,49 +112,111 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
                 expenseAmount = expense;
                 int balance = income - expense;
                 balanceAmount = balance;
-                Log.d("TAGGGD",String.valueOf(balance));
+                //Log.d("TAGGGD",String.valueOf(balance));
             }
         });
         AppExecutors.getInstance().mainThread().execute(new Runnable() {
             @Override
             public void run() {
-                balanceTv.setText("\u20B9" +String.valueOf(balanceAmount));
-                incomeTv.setText("\u20B9" +String.valueOf(incomeAmount));
-                expenseTv.setText("\u20B9" +String.valueOf(expenseAmount));
+                balanceTv.setText(String.valueOf(balanceAmount)+" \u20B9");
+                incomeTv.setText(String.valueOf(incomeAmount)+" \u20B9");
+                expenseTv.setText(String.valueOf(expenseAmount)+" \u20B9");
             }
         });
 
 
     }
 
-    private void getWeekExtremes(){
-        // get Current Week of the year
+    private void getWeekBalanceAmount() throws ParseException {
         Calendar calendar;
         calendar=Calendar.getInstance();
-        Log.v("Current Week", String.valueOf(calendar.get(Calendar.WEEK_OF_YEAR)));
-        int current_week=calendar.get(Calendar.WEEK_OF_YEAR);
-        int week_start_day=calendar.getFirstDayOfWeek(); // this will get the starting day os week in integer format i-e 1 if monday
-        Toast.makeText(getContext(),"Current Week is"+current_week +"Start Day is"+week_start_day,Toast.LENGTH_SHORT).show();
 
-
-        // get the starting and ending date
-        // Set the calendar to sunday of the current week
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-        System.out.println("Current week = " + Calendar.DAY_OF_WEEK);
-
-        // Print dates of the current week starting on Sunday
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String startDate = "", endDate = "";
+        // Set the calendar to sunday of the current week
 
+
+
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
         startDate = df.format(calendar.getTime());
+        Date sDate=df.parse(startDate);
+        final long sdate=sDate.getTime();
+
         calendar.add(Calendar.DATE, 6);
         endDate = df.format(calendar.getTime());
+        Date eDate=df.parse(endDate);
+        final long edate=eDate.getTime();
 
-        System.out.println("Start Date = " + startDate);
-        System.out.println("End Date = " + endDate);
 
         String dateString = startDate + " - " + endDate;
         dateTv.setText(dateString);
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                int income = mAppDb.transactionDao().getAmountbyCustomDates(Constants.incomeCategory,sdate,edate);
+                incomeAmount = income;
+                int expense = mAppDb.transactionDao().getAmountbyCustomDates(Constants.expenseCategory,sdate,edate);
+                expenseAmount = expense;
+                int balance = income - expense;
+                balanceAmount = balance;
+
+            }
+        });
+        AppExecutors.getInstance().mainThread().execute(new Runnable() {
+            @Override
+            public void run() {
+                balanceTv.setText(String.valueOf(balanceAmount)+" \u20B9");
+                incomeTv.setText(String.valueOf(incomeAmount)+" \u20B9");
+                expenseTv.setText(String.valueOf(expenseAmount)+" \u20B9");
+            }
+        });
+    }
+
+    private void getMonthBalanceAmount() throws ParseException {
+        Calendar calendar;
+        calendar=Calendar.getInstance();
+
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String startDate = "", endDate = "";
+        // Set the calendar to sunday of the current week
+
+
+
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        startDate = df.format(calendar.getTime());
+        Date sDate=df.parse(startDate);
+        final long sdate=sDate.getTime();
+
+        calendar.add(Calendar.DATE, 6);
+        endDate = df.format(calendar.getTime());
+        Date eDate=df.parse(endDate);
+        final long edate=eDate.getTime();
+
+
+        String dateString = startDate + " - " + endDate;
+        dateTv.setText(dateString);
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                int income = mAppDb.transactionDao().getAmountbyCustomDates(Constants.incomeCategory,sdate,edate);
+                incomeAmount = income;
+                int expense = mAppDb.transactionDao().getAmountbyCustomDates(Constants.expenseCategory,sdate,edate);
+                expenseAmount = expense;
+                int balance = income - expense;
+                balanceAmount = balance;
+
+            }
+        });
+        AppExecutors.getInstance().mainThread().execute(new Runnable() {
+            @Override
+            public void run() {
+                balanceTv.setText(String.valueOf(balanceAmount)+" \u20B9");
+                incomeTv.setText(String.valueOf(incomeAmount)+" \u20B9");
+                expenseTv.setText(String.valueOf(expenseAmount)+" \u20B9");
+            }
+        });
     }
 
     private void setupPieChart() {
@@ -177,8 +245,22 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-        if (adapterView.getSelectedItemPosition() == 1){
-            getWeekExtremes();
+
+        if(adapterView.getSelectedItemPosition()==0){
+            getAllBalanceAmount();
+        }
+
+        else if (adapterView.getSelectedItemPosition() == 1){
+            //This week
+            try {
+                getWeekBalanceAmount();
+            }
+            catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(adapterView.getSelectedItemPosition()==2){
+            //This month
         }
 
     }
