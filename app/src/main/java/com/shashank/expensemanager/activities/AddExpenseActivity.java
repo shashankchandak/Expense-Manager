@@ -114,7 +114,9 @@ public class AddExpenseActivity extends AppCompatActivity {
             categories.add("Food");
             categories.add("Travel");
             categories.add("Clothes");
+            categories.add("Movies");
             categories.add("Health");
+            categories.add("Grocery");
             categories.add("Other");
             categorySpinner.setAdapter(new ArrayAdapter<>(AddExpenseActivity.this,
                     android.R.layout.simple_list_item_1, categories));
@@ -165,7 +167,9 @@ public class AddExpenseActivity extends AppCompatActivity {
             categories.add("Food");
             categories.add("Travel");
             categories.add("Clothes");
+            categories.add("Movies");
             categories.add("Health");
+            categories.add("Grocery");
             categories.add("Other");
             categorySpinner.setAdapter(new ArrayAdapter<>(AddExpenseActivity.this, android.R.layout.simple_list_item_1, categories));
             categorySpinner.setSelection(categories.indexOf(intent.getStringExtra("category")));
