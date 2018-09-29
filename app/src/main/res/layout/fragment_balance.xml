@@ -55,7 +55,6 @@
         android:layout_marginEnd="104dp"
         android:layout_marginStart="99dp"
         android:layout_marginTop="7dp"
-        android:text="09/01/2018 - 01/23/1234"
         android:textAlignment="center"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/frameLayout"
@@ -71,7 +70,7 @@
         android:layout_marginEnd="133dp"
         android:layout_marginStart="133dp"
         android:layout_marginTop="2dp"
-        android:text="450.00"
+
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="35sp"
@@ -119,7 +118,7 @@
         android:layout_marginEnd="201dp"
         android:layout_marginStart="125dp"
         android:layout_marginTop="9dp"
-        android:text="450.00"
+
         android:textAlignment="center"
         android:textSize="18sp"
         android:textColor="#aeea00"
@@ -136,7 +135,6 @@
         android:layout_marginEnd="119dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
-        android:text="450.98"
         android:textAlignment="center"
         android:textSize="18sp"
         android:textColor="#ff5722"
