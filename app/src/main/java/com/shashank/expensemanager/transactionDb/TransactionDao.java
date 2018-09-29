@@ -21,6 +21,12 @@ public interface TransactionDao {
     @Query("select * from transactionTable where id = :id")
     LiveData<TransactionEntry> loadExpenseById(int id);
 
+    @Query("select sum(amount) from transactionTable where transactionType =:transactionType")
+    int getAmountByTransactionType(String transactionType);
+
+    @Query("select sum(amount) from transactionTable where date between :startDate and :endDate")
+    int getAmountbyCustomDates(long startDate,long endDate);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertExpense(TransactionEntry transactionEntry);
 

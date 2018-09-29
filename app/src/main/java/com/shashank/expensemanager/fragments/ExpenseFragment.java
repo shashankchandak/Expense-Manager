@@ -37,7 +37,7 @@ public class ExpenseFragment extends Fragment {
     private List<TransactionEntry> transactionEntries;
     private CustomAdapter customAdapter;
 
-    private TransactionViewModel transactionViewModel;
+    public TransactionViewModel transactionViewModel;
 
     private AppDatabase mAppDb;
 
