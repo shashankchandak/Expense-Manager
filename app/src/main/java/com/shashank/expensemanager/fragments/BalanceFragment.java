@@ -135,8 +135,6 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
         String startDate = "", endDate = "";
         // Set the calendar to sunday of the current week
 
-
-
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
         startDate = df.format(calendar.getTime());
         Date sDate=df.parse(startDate);
@@ -172,27 +170,26 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
             }
         });
     }
-
+//set up piechart according to spinner
+//change constraint to linear
     private void getMonthBalanceAmount() throws ParseException {
         Calendar calendar;
         calendar=Calendar.getInstance();
 
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String startDate = "", endDate = "";
-        // Set the calendar to sunday of the current week
 
-
-
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        calendar.set(Calendar.DAY_OF_MONTH,1);
         startDate = df.format(calendar.getTime());
+        Log.i("ddds",startDate);
         Date sDate=df.parse(startDate);
         final long sdate=sDate.getTime();
 
-        calendar.add(Calendar.DATE, 6);
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         endDate = df.format(calendar.getTime());
+        Log.i("ddde",endDate);
         Date eDate=df.parse(endDate);
         final long edate=eDate.getTime();
-
 
         String dateString = startDate + " - " + endDate;
         dateTv.setText(dateString);
@@ -206,12 +203,14 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
                 expenseAmount = expense;
                 int balance = income - expense;
                 balanceAmount = balance;
+                //Log.i("balance", String.valueOf(balance));
 
             }
         });
         AppExecutors.getInstance().mainThread().execute(new Runnable() {
             @Override
             public void run() {
+               // Toast.makeText(getContext(), "Updated", Toast.LENGTH_SHORT).show();
                 balanceTv.setText(String.valueOf(balanceAmount)+" \u20B9");
                 incomeTv.setText(String.valueOf(incomeAmount)+" \u20B9");
                 expenseTv.setText(String.valueOf(expenseAmount)+" \u20B9");
@@ -261,6 +260,11 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
         }
         else if(adapterView.getSelectedItemPosition()==2){
             //This month
+            try {
+                getMonthBalanceAmount();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
 
     }
