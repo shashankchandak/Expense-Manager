@@ -2,6 +2,7 @@ package com.shashank.expensemanager.fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,6 +31,7 @@ import com.shashank.expensemanager.transactionDb.AppDatabase;
 import com.shashank.expensemanager.transactionDb.AppExecutors;
 import com.shashank.expensemanager.transactionDb.TransactionViewModel;
 import com.shashank.expensemanager.utils.Constants;
+import com.shashank.expensemanager.utils.ExpenseList;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -37,8 +39,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static com.shashank.expensemanager.activities.MainActivity.fab;
 
@@ -55,8 +59,10 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
     private TextView dateTv;
 
     private int balanceAmount,incomeAmount,expenseAmount;
-    Integer balance[] = {55,50,220,0};
-    String category[] = {"Food", "Theatre", "Sports", "Petrol"} ;
+    private int foodExpense,travelExpense,clothesExpense,moviesExpense,heathExpense,groceryExpense,otherExpense;
+
+    ArrayList<ExpenseList> expenseList;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -64,7 +70,6 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
 
         pieChart= view.findViewById(R.id.balancePieChart);
         spinner = view.findViewById(R.id.spinner);
-        //setupSpinner();
         spinner.setOnItemSelectedListener(this);
 
         mAppDb = AppDatabase.getInstance(getContext());
@@ -74,8 +79,7 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
         incomeTv = view.findViewById(R.id.amountForIncomeTextView);
 
         dateTv = view.findViewById(R.id.dateTextView);
-
-        //getAllBalanceAmount();
+        expenseList=new ArrayList<>();
         return view;
 
     }
@@ -92,13 +96,180 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser){
-            //getAllBalanceAmount();
             setupSpinner();
-            setupPieChart();
             fab.setVisibility(View.GONE);
         } else{
             fab.setVisibility(View.VISIBLE);
         }
+    }
+
+//set up piechart according to spinner
+//change constraint to linear
+    private void setupPieChart() {
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                if(spinner.getSelectedItemPosition()==0)
+                    getAllPieValues();
+                else if(spinner.getSelectedItemPosition()==1) {
+                    try {
+                        getWeekPieValues();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else if(spinner.getSelectedItemPosition()==2){
+                    try {
+                        getMonthPieValues();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                expenseList.clear();
+             if(foodExpense!=0)
+                 expenseList.add(new ExpenseList("Food",foodExpense));
+             if(travelExpense!=0)
+                 expenseList.add(new ExpenseList("Travel",travelExpense));
+             if(clothesExpense!=0)
+                 expenseList.add(new ExpenseList("Clothes",clothesExpense));
+             if(moviesExpense!=0)
+                 expenseList.add(new ExpenseList("Movies",moviesExpense));
+             if(heathExpense!=0)
+                 expenseList.add(new ExpenseList("Health",heathExpense));
+             if(groceryExpense!=0)
+                 expenseList.add(new ExpenseList("Grocery",groceryExpense));
+             if(otherExpense!=0)
+                 expenseList.add(new ExpenseList("Other",otherExpense));
+            }
+        });
+
+
+        AppExecutors.getInstance().mainThread().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                List<PieEntry> pieEntries = new ArrayList<>();
+                for(int i = 0 ; i <expenseList.size(); i++){
+                    pieEntries.add(new PieEntry(expenseList.get(i).getAmount(),expenseList.get(i).getCategory()));
+                }
+                pieChart.setVisibility(View.VISIBLE);
+                PieDataSet dataSet = new PieDataSet(pieEntries,null);
+                dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                PieData pieData = new PieData(dataSet);
+
+                pieData.setValueTextSize(16);
+                pieData.setValueTextColor(Color.WHITE);
+                pieData.setValueFormatter(new PercentFormatter());
+                pieChart.setUsePercentValues(true);
+                pieChart.setData(pieData);
+                pieChart.animateY(1000);
+                pieChart.invalidate();
+            }
+        });
+
+    }
+
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+
+        if(adapterView.getSelectedItemPosition()==0){
+            getAllBalanceAmount();
+            setupPieChart();
+        }
+
+        else if (adapterView.getSelectedItemPosition() == 1){
+            //This week
+            try {
+                getWeekBalanceAmount();
+                setupPieChart();
+            }
+            catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(adapterView.getSelectedItemPosition()==2){
+            //This month
+            try {
+                getMonthBalanceAmount();
+                setupPieChart();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
+
+    private void getAllPieValues(){
+        foodExpense =mAppDb.transactionDao().getSumExpenseByCategory("Food");
+        travelExpense=mAppDb.transactionDao().getSumExpenseByCategory("Travel");
+        clothesExpense=mAppDb.transactionDao().getSumExpenseByCategory("Clothes");
+        moviesExpense=mAppDb.transactionDao().getSumExpenseByCategory("Movies");
+        heathExpense=mAppDb.transactionDao().getSumExpenseByCategory("Health");
+        groceryExpense=mAppDb.transactionDao().getSumExpenseByCategory("Grocery");
+        otherExpense=mAppDb.transactionDao().getSumExpenseByCategory("Other");
+    }
+
+    private void getWeekPieValues() throws ParseException {
+        Calendar calendar;
+        calendar=Calendar.getInstance();
+
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String startDate = "", endDate = "";
+        // Set the calendar to sunday of the current week
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        startDate = df.format(calendar.getTime());
+        Date sDate=df.parse(startDate);
+        final long sdate=sDate.getTime();
+
+        calendar.add(Calendar.DATE, 6);
+        endDate = df.format(calendar.getTime());
+        Date eDate=df.parse(endDate);
+        final long edate=eDate.getTime();
+
+        foodExpense =mAppDb.transactionDao().getSumExpenseByCategoryCustomDate("Food",sdate,edate);
+        travelExpense=mAppDb.transactionDao().getSumExpenseByCategoryCustomDate("Travel",sdate,edate);
+        clothesExpense=mAppDb.transactionDao().getSumExpenseByCategoryCustomDate("Clothes",sdate,edate);
+        moviesExpense=mAppDb.transactionDao().getSumExpenseByCategoryCustomDate("Movies",sdate,edate);
+        heathExpense=mAppDb.transactionDao().getSumExpenseByCategoryCustomDate("Health",sdate,edate);
+        groceryExpense=mAppDb.transactionDao().getSumExpenseByCategoryCustomDate("Grocery",sdate,edate);
+        otherExpense=mAppDb.transactionDao().getSumExpenseByCategoryCustomDate("Other",sdate,edate);
+    }
+
+    private void getMonthPieValues() throws ParseException{
+
+        Calendar calendar;
+        calendar=Calendar.getInstance();
+
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String startDate = "", endDate = "";
+
+        calendar.set(Calendar.DAY_OF_MONTH,1);
+        startDate = df.format(calendar.getTime());
+        Date sDate=df.parse(startDate);
+        final long sdate=sDate.getTime();
+
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        endDate = df.format(calendar.getTime());
+        Date eDate=df.parse(endDate);
+        final long edate=eDate.getTime();
+
+        foodExpense =mAppDb.transactionDao().getSumExpenseByCategoryCustomDate("Food",sdate,edate);
+        travelExpense=mAppDb.transactionDao().getSumExpenseByCategoryCustomDate("Travel",sdate,edate);
+        clothesExpense=mAppDb.transactionDao().getSumExpenseByCategoryCustomDate("Clothes",sdate,edate);
+        moviesExpense=mAppDb.transactionDao().getSumExpenseByCategoryCustomDate("Movies",sdate,edate);
+        heathExpense=mAppDb.transactionDao().getSumExpenseByCategoryCustomDate("Health",sdate,edate);
+        groceryExpense=mAppDb.transactionDao().getSumExpenseByCategoryCustomDate("Grocery",sdate,edate);
+        otherExpense=mAppDb.transactionDao().getSumExpenseByCategoryCustomDate("Other",sdate,edate);
     }
 
     private void getAllBalanceAmount(){
@@ -112,7 +283,6 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
                 expenseAmount = expense;
                 int balance = income - expense;
                 balanceAmount = balance;
-                //Log.d("TAGGGD",String.valueOf(balance));
             }
         });
         AppExecutors.getInstance().mainThread().execute(new Runnable() {
@@ -134,7 +304,6 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String startDate = "", endDate = "";
         // Set the calendar to sunday of the current week
-
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
         startDate = df.format(calendar.getTime());
         Date sDate=df.parse(startDate);
@@ -145,7 +314,6 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
         Date eDate=df.parse(endDate);
         final long edate=eDate.getTime();
 
-
         String dateString = startDate + " - " + endDate;
         dateTv.setText(dateString);
 
@@ -170,8 +338,8 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
             }
         });
     }
-//set up piechart according to spinner
-//change constraint to linear
+
+
     private void getMonthBalanceAmount() throws ParseException {
         Calendar calendar;
         calendar=Calendar.getInstance();
@@ -181,13 +349,11 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
 
         calendar.set(Calendar.DAY_OF_MONTH,1);
         startDate = df.format(calendar.getTime());
-        Log.i("ddds",startDate);
         Date sDate=df.parse(startDate);
         final long sdate=sDate.getTime();
 
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         endDate = df.format(calendar.getTime());
-        Log.i("ddde",endDate);
         Date eDate=df.parse(endDate);
         final long edate=eDate.getTime();
 
@@ -203,74 +369,18 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
                 expenseAmount = expense;
                 int balance = income - expense;
                 balanceAmount = balance;
-                //Log.i("balance", String.valueOf(balance));
 
             }
         });
         AppExecutors.getInstance().mainThread().execute(new Runnable() {
             @Override
             public void run() {
-               // Toast.makeText(getContext(), "Updated", Toast.LENGTH_SHORT).show();
                 balanceTv.setText(String.valueOf(balanceAmount)+" \u20B9");
                 incomeTv.setText(String.valueOf(incomeAmount)+" \u20B9");
                 expenseTv.setText(String.valueOf(expenseAmount)+" \u20B9");
             }
         });
     }
-
-    private void setupPieChart() {
-
-        List<PieEntry> pieEntries = new ArrayList<>();
-        for(int i = 0 ; i < balance.length; i++){
-            pieEntries.add(new PieEntry(balance[i],category[i]));
-        }
-        pieChart.setVisibility(View.VISIBLE);
-        PieDataSet dataSet = new PieDataSet(pieEntries,null);
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        PieData pieData = new PieData(dataSet);
-        pieData.setValueTextSize(20);
-
-        pieChart.setData(pieData);
-//        pieData.setValueTextColor
-
-        pieChart.animateY(1000);
-        pieChart.invalidate();
-
-
-
-    }
-
-
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-
-        if(adapterView.getSelectedItemPosition()==0){
-            getAllBalanceAmount();
-        }
-
-        else if (adapterView.getSelectedItemPosition() == 1){
-            //This week
-            try {
-                getWeekBalanceAmount();
-            }
-            catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        else if(adapterView.getSelectedItemPosition()==2){
-            //This month
-            try {
-                getMonthBalanceAmount();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
 }
+
+

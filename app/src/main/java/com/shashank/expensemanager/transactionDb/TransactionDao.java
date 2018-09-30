@@ -27,6 +27,12 @@ public interface TransactionDao {
     @Query("select sum(amount) from transactionTable where transactionType =:transactionType and  date between :startDate and :endDate")
     int getAmountbyCustomDates(String transactionType,long startDate,long endDate);
 
+    @Query("select sum(amount) from transactionTable where category=:category")
+    int getSumExpenseByCategory(String category);
+
+    @Query("select sum(amount) from transactionTable where category=:category and date between :startDate and :endDate")
+    int getSumExpenseByCategoryCustomDate(String category,long startDate, long endDate);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertExpense(TransactionEntry transactionEntry);
 
