@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -55,14 +56,12 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
     Spinner spinner;
 
     private TextView balanceTv,incomeTv,expenseTv;
-
     private TextView dateTv;
 
     private int balanceAmount,incomeAmount,expenseAmount;
     private int foodExpense,travelExpense,clothesExpense,moviesExpense,heathExpense,groceryExpense,otherExpense;
 
     ArrayList<ExpenseList> expenseList;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -81,6 +80,10 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
         dateTv = view.findViewById(R.id.dateTextView);
         expenseList=new ArrayList<>();
         return view;
+
+        //TODO 1.Change constraint to linear and change entire layout
+        //TODO 2.Align piechart properly with label
+        //TODO 3.See if can opytimize queries and spinner state and read about fragment lifecycle
 
     }
 
@@ -103,8 +106,6 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
         }
     }
 
-//set up piechart according to spinner
-//change constraint to linear
     private void setupPieChart() {
 
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -166,6 +167,12 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
                 pieChart.setData(pieData);
                 pieChart.animateY(1000);
                 pieChart.invalidate();
+
+                Legend l=pieChart.getLegend();
+                l.setPosition(Legend.LegendPosition.LEFT_OF_CHART);
+                //l.setXEntrySpace(8f);
+                //l.setYEntrySpace(1f);
+                //l.setYOffset(0f);
             }
         });
 
@@ -382,5 +389,3 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
         });
     }
 }
-
-
