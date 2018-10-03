@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -187,6 +188,8 @@ public class AddExpenseActivity extends AppCompatActivity {
 
     public void showDatePicker() {
 
+        /*DatePickerDialog datePickerDialog;
+
         new DatePickerDialog(AddExpenseActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -195,7 +198,25 @@ public class AddExpenseActivity extends AppCompatActivity {
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 setDateToTextView();
             }
-        }, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        }, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();*/
+
+        DatePickerDialog datePickerDialog;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            datePickerDialog = new DatePickerDialog(AddExpenseActivity.this);
+
+            datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    myCalendar.set(Calendar.YEAR, year);
+                    myCalendar.set(Calendar.MONTH, month);
+                    myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    setDateToTextView();
+                }
+            });
+
+            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+            datePickerDialog.show();
+        }
     }
 
     public void setDateToTextView() {
