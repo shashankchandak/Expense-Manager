@@ -1,7 +1,9 @@
 package com.shashank.expensemanager.fragments;
 
+import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -60,6 +62,8 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
 
     private int balanceAmount,incomeAmount,expenseAmount;
     private int foodExpense,travelExpense,clothesExpense,moviesExpense,heathExpense,groceryExpense,otherExpense;
+
+    long firstDate;
 
     ArrayList<ExpenseList> expenseList;
     @Nullable
@@ -281,7 +285,23 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
     }
 
     private void getAllBalanceAmount(){
-        dateTv.setText("All");
+
+        //get date when first transaction date and todays date
+       AppExecutors.getInstance().diskIO().execute(new Runnable() {
+           @Override
+           public void run() {
+               firstDate=mAppDb.transactionDao().getFirstDate();
+           }
+       });
+
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        String first = df.format(new Date(firstDate));
+        Date today=Calendar.getInstance().getTime();
+        String todaysDate=df.format(today);
+        String Date=first+" - "+todaysDate;
+        dateTv.setText(Date);
+
+
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {

@@ -10,6 +10,7 @@ import android.arch.persistence.room.Update;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Dao
@@ -32,6 +33,9 @@ public interface TransactionDao {
 
     @Query("select sum(amount) from transactionTable where category=:category and date between :startDate and :endDate")
     int getSumExpenseByCategoryCustomDate(String category,long startDate, long endDate);
+
+    @Query("select min(date) from transactionTable ")
+    long getFirstDate();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertExpense(TransactionEntry transactionEntry);
