@@ -168,6 +168,7 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
                 pieChart.animateY(1000);
                 pieChart.invalidate();
 
+                pieChart.getDescription().setText("");
                 Legend l=pieChart.getLegend();
                 l.setPosition(Legend.LegendPosition.LEFT_OF_CHART);
                 //l.setXEntrySpace(8f);
