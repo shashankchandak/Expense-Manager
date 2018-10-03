@@ -51,6 +51,7 @@ public class AddExpenseActivity extends AppCompatActivity {
     String description;
     Date dateOfExpense;
 
+    private DatePickerDialog datePickerDialog;
     private static AppDatabase appDatabase;
 
 
@@ -188,9 +189,8 @@ public class AddExpenseActivity extends AppCompatActivity {
 
     public void showDatePicker() {
 
-        /*DatePickerDialog datePickerDialog;
 
-        new DatePickerDialog(AddExpenseActivity.this, new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog.OnDateSetListener dateSetListener=new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 myCalendar.set(Calendar.YEAR, year);
@@ -198,10 +198,28 @@ public class AddExpenseActivity extends AppCompatActivity {
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 setDateToTextView();
             }
-        }, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();*/
+        };
 
-        DatePickerDialog datePickerDialog;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        DatePickerDialog datePickerDialog=new DatePickerDialog(AddExpenseActivity.this,dateSetListener,
+                myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH));
+
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        datePickerDialog.show();
+
+        //In this method not able to set max date
+        /*new DatePickerDialog(AddExpenseActivity.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, month);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                setDateToTextView();
+            }
+        }, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)
+        ).show();*/
+
+        //This methode requires android n
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             datePickerDialog = new DatePickerDialog(AddExpenseActivity.this);
 
             datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
@@ -216,8 +234,16 @@ public class AddExpenseActivity extends AppCompatActivity {
 
             datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
             datePickerDialog.show();
-        }
+        }*/
+
     }
+
+
+
+
+
+
+
 
     public void setDateToTextView() {
         Date date = myCalendar.getTime();
