@@ -301,7 +301,6 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
         String Date=first+" - "+todaysDate;
         dateTv.setText(Date);
 
-
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
