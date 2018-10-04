@@ -10,5 +10,6 @@ Features:
   4. No internet connection required , the app works completely offline.
    
 P.S.  We don't save your location( or any other metadata) ; this app is for your convenience only.
+
 Start with this app to inculcate a systematic approach in your life.
   
