@@ -45,8 +45,6 @@ public class ExpenseFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view=inflater.inflate(R.layout.fragment_expense,container,false);
-
-
         rv=view.findViewById(R.id.transactionRecyclerView);
         rv.setHasFixedSize(true);
         transactionEntries = new ArrayList<>();
@@ -105,7 +103,7 @@ public class ExpenseFragment extends Fragment {
                         for (int i =0 ; i < transactionEntries.size() ; i++){
                             String description = transactionEntries.get(i).getDescription();
                             int amount = transactionEntries.get(i).getAmount();
-                            Log.i("DESCRIPTION AMOUNT",description + String.valueOf(amount));
+                            //Log.i("DESCRIPTION AMOUNT",description + String.valueOf(amount));
                         }
 
 //                        Setting Adapter

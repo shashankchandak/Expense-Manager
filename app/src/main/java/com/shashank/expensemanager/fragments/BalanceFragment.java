@@ -83,6 +83,8 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
 
         dateTv = view.findViewById(R.id.dateTextView);
         expenseList=new ArrayList<>();
+        getAllBalanceAmount();
+        setupPieChart();
         return view;
 
         //TODO 1.Change constraint to linear and change entire layout
@@ -102,6 +104,7 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        Log.i("fragment", String.valueOf(isVisibleToUser));
         if (isVisibleToUser){
             setupSpinner();
             fab.setVisibility(View.GONE);
@@ -187,7 +190,6 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-
         if(adapterView.getSelectedItemPosition()==0){
             getAllBalanceAmount();
             setupPieChart();
@@ -217,7 +219,6 @@ public class BalanceFragment extends Fragment implements AdapterView.OnItemSelec
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-
     }
 
 
