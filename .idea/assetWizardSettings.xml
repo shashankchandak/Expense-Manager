@@ -36,6 +36,7 @@
                                       <entry key="backgroundAssetType" value="COLOR" />
                                       <entry key="backgroundColor" value="ff5722" />
                                       <entry key="foregroundImage" value="C:\Users\happy\AndroidStudioProjects\ExpenseManager\app\src\main\res\drawable\ic_account_balance_wallet_white_24dp.xml" />
+                                      <entry key="outputName" value="app_logo" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -77,8 +78,11 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_account_balance_wallet_white_24dp" />
+                            <entry key="height" value="200" />
+                            <entry key="outputName" value="splashlogo" />
+                            <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="C:\Users\happy" />
+                            <entry key="width" value="200" />
                           </map>
                         </option>
                       </PersistentState>
