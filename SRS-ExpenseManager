@@ -1,0 +1,171 @@
+TABLE OF CONTENT
+
+1) Introduction
+	1.1) Purpose
+	1.2) Document Convention
+	1.3) Intended Audience
+
+2) Overall Description
+	2.1) Product Perspective
+	2.2) User Classes and Characteristics
+	2.3) Operating Environment
+	2.4) Design
+
+3) Functionality
+	3.1) Activity1
+	3.2) Activity2
+
+4) External Interface Requirement
+	4.1) User Interfaces
+	4.2) Hardware Interfaces
+
+5) Security
+
+
+
+
+
+
+1 INTRODUCTION
+
+1.1 Purpose
+	Purpose of this document is to build an expense management
+system for general people to keep a record of their expenses in a 
+systematic manner .
+
+
+1.2 Document Convention
+	app	Android application
+
+
+1.3 Intended Audience 
+	Anyone who struggles with keeping track of expenditures.
+	Particularly college students and working professionals.
+
+
+
+2  OVERALL DESCRIPTION
+
+2.1 Product Perspective
+	The app stores each transaction done by the user .
+	The user has to manually enter each traction .
+	Each transaction has 3 characteristics :
+		a) Amount
+		b) Income/Expenditure
+		c) Category 
+
+* 2.2 User Classes and Characteristics
+
+
+2.3 Operating Environment
+	Application
+		Android Studio 3.1
+		Android Studio 3.2
+	Operating System
+		Ubuntu 18.04
+		Windows 10
+	Intended for
+		Android API 26 and above
+
+2.4 Design
+	Concepts used 
+		Recycler View
+		Fragments
+		Tabbed Layout
+		Material Design
+		Card view
+		Layout [ Linear , Constraint ]
+		Date picker
+		Calendar
+		Architecture Components [ Room , Entiity , LiveData 
+					  ViewModel ]
+		SQLite database
+		
+
+	Dependencies
+		MPChartLibrary [ for PieChart ]
+		Material Design
+		Card View
+		App Compat
+
+
+
+
+3 FUNCTIONALITY
+	
+3.1 Activity 1 [ Main Activity ]
+	This is the activity that the user is greeted with .
+	It has 2 fragments : Expenses and Balance
+	
+	Balance :
+	Spinner gives options :  all(default) , week or  month and
+	defines timeframe .
+	Income textField displays the total income by querying the 
+	database .
+	Similarly Expense testField total expenditure with defined
+	timeframe .
+	Effective balance is calculated as total income - total expense
+	and displayed in another textfield . It supports negative values.
+	All transactions occur only in non-negative integers .
+	A 3rd party library MPChart is used to display all data in 
+	a Pie-chart format .
+
+	Expense : A recycler view has been utilised which generates 
+	multiple card views . Each card view displays 1 transaction 
+	including details : amount , date , category and comment .
+	The transaction details are fetched from the SQLite database
+	stored locally . It is displayed in decreasing date-wise order
+	ie: most recent to oldest .
+	There is a floating Action Button which on clicking pulls up an
+	Bottom Sheet Layout . It gives option between "Add Expense" and 
+	"Add Income" . On selecting either option , Activity 2 is opened .
+	Includes feature to swipe-right to delete a transaction .
+	Correspondingly , it deletes transaction from the SQLite database.
+	On tapping on any of the card view , you can edit any transaction
+	after having created it .
+
+	   
+3.2 Activity 2 
+	If "Add Income" is opted for then ,
+	It asks for 
+		Amount 
+		Date
+		Description
+	Category is disabled.
+
+	If "Add Expense" is opted for then ,
+	IT asks for
+		Amount
+		Date
+		Description
+		Category
+	Category is a spinner and  provides options :
+		[Food,Travel,Clothes,Movies,Health,Grocery,Other]
+	
+	Each field is mandatory
+
+	Date uses a date-picker
+	
+	Amount and Description fields are a combination of
+	TextView and EditText in a TextInput Layout[ material design ]
+	
+
+
+
+4  EXTERNAL INTERFACE REQUIREMENTS
+
+4.1 User Interfaces
+	Front-end : XML
+	Back-end  : SQLite
+
+4.2 Hardware Interfaces
+	AndroidOS Oreo and above
+
+
+
+
+5 SECURITY 
+	Since this application uses local storage for data
+	and it does not communicate with any network , it is inherently
+	secure . It is not susceptible to any MITM(Man In The Middle Attacks)
+	It is only susceptible to remote code execution .
