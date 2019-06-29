@@ -16,5 +16,5 @@ Start with this app to inculcate a systematic approach in your life.
 #Some ScreenShots:
 
 
-![View Expenses Screen) [Sreenshots/1.png]
-![View Balance Screen) [Screenshots/2.png]
+![View Expenses Screen] (Sreenshots/1.png)
+![View Balance Screen] (Screenshots/2.png)
