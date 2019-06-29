@@ -13,3 +13,14 @@ P.S.  We don't save your location( or any other metadata) ; this app is for your
 
 Start with this app to inculcate a systematic approach in your life.
   
+#Some ScreenShots:
+
+
+
+<img height=550 width=275 src="https://github.com/shashankchandak/Expense-Manager/Screenshots/1.PNG"/>
+<img height=550 width=275 src="https://github.com/shashankchandak/Expense-Manager/Screenshots/2.PNG"/>
+<img height=550 width=275 src="https://github.com/shashankchandak/Expense-Manager/Screenshots/3.PNG"/>
+<br><br><br>
+<img height=550 width=275 src="https://github.com/shashankchandak/Expense-Manager/Screenshots/4.PNG"/>
+<img height=550 width=275 src="https://github.com/shashankchandak/Expense-Manager/Screenshots/5.PNG"/>
+<img height=550 width=275 src="https://github.com/shashankchandak/Expense-Manager/Screenshots/6.PNG"/>
