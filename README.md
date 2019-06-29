@@ -13,8 +13,8 @@ P.S.  We don't save your location( or any other metadata) ; this app is for your
 
 Start with this app to inculcate a systematic approach in your life.
   
-#Some ScreenShots:
+# Some ScreenShots:
 
 
-![View Expenses Screen] (Sreenshots/1.png)
-![View Balance Screen] (Screenshots/2.png)
+![View Expenses Screen](https://github.com/shashankchandak/Expense-Manager/blob/master/Sreenshots/1.png)
+![View Balance Screen](https://github.com/shashankchandak/Expense-Manager/blob/master/Sreenshots/2.png)
