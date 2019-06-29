@@ -17,10 +17,10 @@ Start with this app to inculcate a systematic approach in your life.
 
 
 
-<img height=550 width=275 src="https://github.com/shashankchandak/Expense-Manager/Screenshots/1.PNG"/>
-<img height=550 width=275 src="https://github.com/shashankchandak/Expense-Manager/Screenshots/2.PNG"/>
-<img height=550 width=275 src="https://github.com/shashankchandak/Expense-Manager/Screenshots/3.PNG"/>
+<img height=550 width=275 src="https://github.com/shashankchandak/Expense-Manager/blob/master/Sreenshots/1.png"/>
+<img height=550 width=275 src="https://github.com/shashankchandak/Expense-Manager/blob/master/Sreenshots/2.png"/>
+<img height=550 width=275 src="https://github.com/shashankchandak/Expense-Manager/blob/master/Sreenshots/3.png"/>
 <br><br><br>
-<img height=550 width=275 src="https://github.com/shashankchandak/Expense-Manager/Screenshots/4.PNG"/>
-<img height=550 width=275 src="https://github.com/shashankchandak/Expense-Manager/Screenshots/5.PNG"/>
-<img height=550 width=275 src="https://github.com/shashankchandak/Expense-Manager/Screenshots/6.PNG"/>
+<img height=550 width=275 src="https://github.com/shashankchandak/Expense-Manager/blob/master/Sreenshots/4.png"/>
+<img height=550 width=275 src="https://github.com/shashankchandak/Expense-Manager/blob/master/Sreenshots/5.png"/>
+<img height=550 width=275 src="https://github.com/shashankchandak/Expense-Manager/blob/master/Sreenshots/6.png"/>
